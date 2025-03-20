@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useLocation } from "react-router-dom";
 
-export default function OptionsPage({ sendDataToParent }) {
+export default function OptionsPage({ sendDataToParent, sendSpecstoParent }) {
   const [data, setData] = useState(undefined);
-  const [postContent, setPostContent] = useState("Type Here...");
+  const [specs, setSpecs] = useState("Type Here...");
   const options = [
     "Event Invitation",
     "Event Promotional Content",
@@ -20,6 +20,7 @@ export default function OptionsPage({ sendDataToParent }) {
   function handleClick(e) {
     e.preventDefault();
     sendDataToParent(data);
+    sendSpecstoParent(specs);
   }
 
   return (
@@ -48,9 +49,10 @@ export default function OptionsPage({ sendDataToParent }) {
           <label>Mention any specific requirements</label>
           <div class="flex flex-col justify-center items-center mb-[20px]">
             <textarea
-              name="postContent"
-              value={postContent}
-              onChange={(e) => setPostContent(e.target.value)}
+              name="specs"
+              defaultValue="Type Here.."
+              value={specs}
+              onChange={(e) => setSpecs(e.target.value)}
               class="border border-black mt-3 p-4 md:w-[350px] w-[250px]"
             />
           </div>

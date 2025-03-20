@@ -3,11 +3,22 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Link, useNavigate } from "react-router-dom";
 export default function CenterComp() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const API_KEY = "AIzaSyC9yw7V35BE9U4Tg0EELDSpLhSb9NyeVsU";
+  const API_KEY = process.env.API_KEY;
   const genAI = new GoogleGenerativeAI(API_KEY);
 
   const handleFileUpload = (event) => {
-    setSelectedFile(event.target.files[0]);
+    var fileName = document.getElementById("file").value.toLowerCase();
+    if (
+      !fileName.endsWith(".jpg") &&
+      !fileName.endsWith(".png") &&
+      !fileName.endsWith(".jpeg")
+    ) {
+      alert("You can upload image files only.");
+      document.getElementById("file").value = "";
+      return false;
+    } else {
+      setSelectedFile(event.target.files[0]);
+    }
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -30,11 +41,13 @@ export default function CenterComp() {
     setIsOpen(!isOpen);
   };
 
+  const checkFile = () => {};
+
   async function function1() {
     setIsOpen(!isOpen);
 
     // For text-and-images input (multimodal), use the gemini-pro-vision model
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = "Tell me about this picture in less than 5 sentences.";
 
@@ -93,7 +106,12 @@ export default function CenterComp() {
           </div>
         ) : (
           <div class=" mb-24">
-            <input type="file" class="mt-24" onChange={handleFileUpload} />
+            <input
+              type="file"
+              id="file"
+              class="mt-24"
+              onChange={handleFileUpload}
+            />
             <button
               onClick={function1}
               class="bg-[#FFC100] hover:bg-[#ffa852] text-white font-bold py-2 px-4 rounded mt-3"

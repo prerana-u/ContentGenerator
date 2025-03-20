@@ -5,10 +5,16 @@ import OptionsPage from "./OptionsPage";
 
 export default function GeneratorPage() {
   const [dataFromChild, setDataFromChild] = useState("OptionsPage");
+  const [derivedspecs, setderivedSpecs] = useState("None");
 
   function handleDataFromChild(data) {
     setDataFromChild(data);
     console.log(data);
+  }
+
+  function handleSpecsFromChild(specs) {
+    setderivedSpecs(specs);
+    console.log(specs);
   }
 
   return (
@@ -32,11 +38,13 @@ export default function GeneratorPage() {
         {dataFromChild === "OptionsPage" ? (
           <OptionsPage
             sendDataToParent={handleDataFromChild}
+            sendSpecstoParent={handleSpecsFromChild}
             className="mb-10"
           />
         ) : (
           <MessageGenerator
             type={dataFromChild}
+            specs={derivedspecs}
             className="mb-10 w-auto h-auto"
           />
         )}

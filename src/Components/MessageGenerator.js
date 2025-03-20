@@ -14,7 +14,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 
 export default function MessageGenerator(props) {
   //   const [selectedFile, setSelectedFile] = useState(null);
-  const API_KEY = "AIzaSyC9yw7V35BE9U4Tg0EELDSpLhSb9NyeVsU";
+  const API_KEY = process.env.API_KEY;
   const genAI = new GoogleGenerativeAI(API_KEY);
 
   //   const handleFileUpload = (event) => {
@@ -50,16 +50,18 @@ export default function MessageGenerator(props) {
       postContent +
       ". Generate the content in the form of a " +
       data +
-      " in the length of " +
+      " with the length of " +
       length +
       " " +
       intype +
       ". If it is a letter or an email, also set the receiver's name as " +
-      recname;
+      recname +
+      ". Finally, add the given requirements if any, as follows: " +
+      props.specs;
 
     console.log(prompt);
     // console.log(postContent);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
